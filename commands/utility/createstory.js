@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { Story } = require('../../db/models');
+const { Story } = require('../../db/models/Story');
+const { createStory } = require('../../db/helpers/createStory');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,8 +20,10 @@ module.exports = {
         const title = interaction.options.getString('title');
         const genre = interaction.options.getString('genre');
 
-        const newStory = new Story({ title, genre, text: [] });
-        await newStory.save();
+        // const newStory = new Story({ title, genre, text: [] });
+        // await newStory.save();
+
+        await createStory(title, genre, interaction.user.username,interaction.user.id);
 
         await interaction.reply(`Creating a new story with the title "${title}" and the genre "${genre}"`);
 
